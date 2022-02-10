@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from rest_framework import mixins, viewsets
 
-# Create your views here.
+from orders.models import Order
+from orders.serializers import OrderSerializer
+
+
+class OrderViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    search_fields = ('id',)
