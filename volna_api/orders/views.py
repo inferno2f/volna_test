@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
 
@@ -5,10 +6,12 @@ from orders.constants import SUCCESS, FAILURE
 from orders.models import Order
 from orders.serializers import OrderSerializer
 
+
 class OrderViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    search_fields = ('id',)
+    filter_backends = (DjangoFilterBackend,)
+    filterset_fields = ('id',)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
